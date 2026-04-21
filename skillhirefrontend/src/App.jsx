@@ -13,6 +13,8 @@ import Messages           from './pages/Messages'
 import SearchResults      from './pages/SearchResults'
 import WorkerProfileDetail from './pages/WorkerProfileDetail'
 import BookingPage        from './pages/BookingPage'
+import WorkerRequests     from './pages/WorkerRequests'
+import WorkerReviews      from './pages/WorkerReviews'
 
 // Protected route wrapper
 function Protected({ children, allowedRoles }) {
@@ -42,6 +44,8 @@ export default function App() {
 
         {/* Worker */}
         <Route path="/worker-dashboard"    element={<Protected allowedRoles={['worker']}><WorkerDashboard /></Protected>} />
+        <Route path="/worker-requests"     element={<Protected allowedRoles={['worker']}><WorkerRequests /></Protected>} />
+        <Route path="/worker-reviews"      element={<Protected allowedRoles={['worker']}><WorkerReviews /></Protected>} />
 
         {/* Admin */}
         <Route path="/admin-dashboard"     element={<Protected allowedRoles={['admin']}><AdminDashboard /></Protected>} />

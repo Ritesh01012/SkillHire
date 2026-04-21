@@ -168,6 +168,84 @@ router.get('/profile', authenticateToken, async (req, res) => {
   }
 });
 
+// Accept booking
+router.put('/bookings/:id/accept', authenticateToken, async (req, res) => {
+  try {
+    if (req.userRole !== 'worker') {
+      return res.status(403).json({ message: 'Access denied. Worker role required.' });
+    }
+
+    const booking = await Booking.findById(req.params.id);
+
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    if (booking.worker.toString() !== req.userId) {
+      return res.status(403).json({ message: 'Access denied. Not your booking' });
+    }
+
+    booking.status = 'accepted';
+    await booking.save();
+
+    res.json({ message: 'Booking accepted successfully', booking });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Reject booking
+router.put('/bookings/:id/reject', authenticateToken, async (req, res) => {
+  try {
+    if (req.userRole !== 'worker') {
+      return res.status(403).json({ message: 'Access denied. Worker role required.' });
+    }
+
+    const booking = await Booking.findById(req.params.id);
+
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    if (booking.worker.toString() !== req.userId) {
+      return res.status(403).json({ message: 'Access denied. Not your booking' });
+    }
+
+    booking.status = 'cancelled';
+    await booking.save();
+
+    res.json({ message: 'Booking rejected successfully', booking });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
+// Complete booking
+router.put('/bookings/:id/complete', authenticateToken, async (req, res) => {
+  try {
+    if (req.userRole !== 'worker') {
+      return res.status(403).json({ message: 'Access denied. Worker role required.' });
+    }
+
+    const booking = await Booking.findById(req.params.id);
+
+    if (!booking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    if (booking.worker.toString() !== req.userId) {
+      return res.status(403).json({ message: 'Access denied. Not your booking' });
+    }
+
+    booking.status = 'completed';
+    await booking.save();
+
+    res.json({ message: 'Booking completed successfully', booking });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 // Update worker profile
 router.put('/profile', authenticateToken, async (req, res) => {
   try {

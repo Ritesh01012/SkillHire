@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import { getCurrentUser } from '../data/auth'
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function WorkerDashboard() {
   const user = getCurrentUser()
+  const navigate = useNavigate()
   const [stats, setStats] = useState({
     totalJobs: 0,
     completedJobs: 0,
@@ -134,7 +136,7 @@ export default function WorkerDashboard() {
             <div className="text-4xl mb-3">📋</div>
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Incoming Requests</h3>
             <p className="text-gray-600 dark:text-gray-400 mb-4">You have <span className="font-bold text-blue-600">{loading ? '...' : stats.pendingRequests} new</span> booking requests.</p>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold">View Requests</button>
+            <button onClick={() => navigate('/worker-requests')} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold">View Requests</button>
           </div>
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
             <div className="text-4xl mb-3">👤</div>
@@ -145,7 +147,8 @@ export default function WorkerDashboard() {
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
             <div className="text-4xl mb-3">⭐</div>
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">My Reviews</h3>
-            <p className="text-gray-600 dark:text-gray-400">Average Rating: <span className="font-bold text-yellow-500">{loading ? '...' : `${stats.averageRating} / 5`}</span> ({stats.totalReviews} reviews)</p>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">Average Rating: <span className="font-bold text-yellow-500">{loading ? '...' : `${stats.averageRating} / 5`}</span> ({stats.totalReviews} reviews)</p>
+            <button onClick={() => navigate('/worker-reviews')} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold">View Reviews</button>
           </div>
         </div>
 
